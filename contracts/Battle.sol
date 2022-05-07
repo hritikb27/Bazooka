@@ -7,7 +7,6 @@ contract Battle {
     address public owner;
     uint256 public monthNo = 1;
     uint256 public battleID = 0;
-    bool public canVote;
     uint256 public maxBattles = 100;
 
     struct BattleStruct {
@@ -40,6 +39,7 @@ contract Battle {
     }
 
     function IncrementVote1(uint256 battleId) public {
+        bool canVote;
         require(BattlesMapping[monthNo][battleId].finalized == true, 'Finalize the battle first');
         if(BattlesMapping[monthNo][battleId].allVotes.length==0) canVote=true;
         else{
@@ -58,6 +58,7 @@ contract Battle {
     }
     
     function IncrementVote2(uint256 battleId) public {
+        bool canVote;
         require(BattlesMapping[monthNo][battleId].finalized == true, 'Finalize the battle first');
         if(BattlesMapping[monthNo][battleId].allVotes.length==0) canVote=true;
         else{
