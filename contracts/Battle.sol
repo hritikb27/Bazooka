@@ -5,39 +5,101 @@ import "hardhat/console.sol";
 
 contract Battle {
     address public owner;
-    uint public monthNo = 1;
+    uint256 public monthNo = 1;
     uint256 public battleID = 0;
+    bool public canVote;
+
 
     struct BattleStruct {
         address _address1;
         address _address2;
-        uint  _votes1;
-        uint  _votes2;
-        uint _id;
+        uint256 votes1;
+        address[] _votes1;
+        uint256 votes2;
+        address[] _votes2;
+        address[] allVotes;
+        uint256 amount;
+        bool finalized;
+        uint256 _id;
     }
 
-    mapping(uint => mapping(uint256 => BattleStruct)) public BattlesMapping;
+    mapping(uint256 => mapping(uint256 => BattleStruct)) public BattlesMapping;
 
     constructor() {
         owner = msg.sender;
     }
 
-    function getVotes(uint256 battleId) public view returns (uint, uint) {
-        uint vote1 = BattlesMapping[monthNo][battleId]._votes1;
-        uint vote2 = BattlesMapping[monthNo][battleId]._votes2;
+    function getVotes(uint256 battleId) public view returns (uint256, uint256) {
+        uint vote1 = BattlesMapping[monthNo][battleId].votes1;
+        uint vote2 = BattlesMapping[monthNo][battleId].votes2;
         return (vote1, vote2);
     }
 
-    function setVotes1(uint256 battleId, uint256 vote) public {
-        BattlesMapping[monthNo][battleId]._votes1 = vote;
-    }
-    
-    function setVotes2(uint256 battleId, uint256 vote) public {
-        BattlesMapping[monthNo][battleId]._votes2 = vote;
+    function getVoters1(uint256 battleId) public view returns (address[] memory) {
+        return BattlesMapping[monthNo][battleId]._votes1;
     }
 
-    function createBattle(address _candidate1, address _candidate2) public {
+    function IncrementVote1(uint256 battleId) public {
+        require(BattlesMapping[monthNo][battleId].finalized == true, 'Finalize the battle first');
+        if(BattlesMapping[monthNo][battleId].allVotes.length==0) canVote=true;
+        else{
+            for(uint i=BattlesMapping[monthNo][battleId].allVotes.length; i>0; i=i-1){
+                if(BattlesMapping[monthNo][battleId].allVotes[i-1]==msg.sender) {
+                    canVote=false;
+                    break;
+                }
+                else canVote=true;
+            }     
+        }   
+        require(canVote==true, 'Already Voted!');
+        BattlesMapping[monthNo][battleId].votes1 = BattlesMapping[monthNo][battleId].votes1 + 1;
+        BattlesMapping[monthNo][battleId]._votes1.push(msg.sender);
+        BattlesMapping[monthNo][battleId].allVotes.push(msg.sender);
+    }
+    
+    function IncrementVote2(uint256 battleId) public {
+        require(BattlesMapping[monthNo][battleId].finalized == true, 'Finalize the battle first');
+        if(BattlesMapping[monthNo][battleId].allVotes.length==0) canVote=true;
+        else{
+            for(uint i=BattlesMapping[monthNo][battleId].allVotes.length; i>0; i=i-1){
+                if(BattlesMapping[monthNo][battleId].allVotes[i-1]==msg.sender) {
+                    canVote=false;
+                    break;
+                }
+                else canVote=true;
+            }     
+        }   
+        require(canVote==true, 'Already Voted!');
+        BattlesMapping[monthNo][battleId].votes2 = BattlesMapping[monthNo][battleId].votes2 + 1;
+        BattlesMapping[monthNo][battleId]._votes2.push(msg.sender);
+        BattlesMapping[monthNo][battleId].allVotes.push(msg.sender);
+    }
+
+    function finalizeBattle(uint256 battleId, address _candidate2) payable checkAmount(msg.value) public {
+        require(battleId<=battleID, 'Initialize a battle first');
+        require(BattlesMapping[monthNo][battleId].finalized == false, 'Battle already finalized');
+        BattlesMapping[monthNo][battleId]._address2 = _candidate2;
+        BattlesMapping[monthNo][battleId].votes1 = 0;
+        BattlesMapping[monthNo][battleId].votes2 = 0;
+        BattlesMapping[monthNo][battleId].amount += msg.value;
+        BattlesMapping[monthNo][battleId].finalized = true;
+    }
+
+    function createInitialBattle(address _candidate1) payable checkAmount(msg.value) public {
         battleID += 1;
-        BattlesMapping[monthNo][battleID] = BattleStruct(_candidate1, _candidate2, 0, 0, battleID);
+        BattleStruct storage battle = BattlesMapping[monthNo][battleID];
+        battle._address1 = _candidate1;
+        battle.amount = msg.value;
+        battle.finalized = false;
+        battle._id = battleID;
+    }
+
+    function getBalance() public view returns (uint256) {
+        return address(this).balance;
+    }
+
+    modifier checkAmount(uint256 amount) {
+        require(amount == 1000000000000000000 || amount == 2000000000000000000 || amount == 3000000000000000000,'Not correct amount');
+        _;
     }
 }
