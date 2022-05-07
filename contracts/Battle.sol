@@ -8,7 +8,7 @@ contract Battle {
     uint256 public monthNo = 1;
     uint256 public battleID = 0;
     bool public canVote;
-
+    uint256 public maxBattles = 100;
 
     struct BattleStruct {
         address _address1;
@@ -86,6 +86,7 @@ contract Battle {
     }
 
     function createInitialBattle(address _candidate1) payable checkAmount(msg.value) public {
+        require(battleID+1<=maxBattles,'Battles limit exceeded!');
         battleID += 1;
         BattleStruct storage battle = BattlesMapping[monthNo][battleID];
         battle._address1 = _candidate1;
