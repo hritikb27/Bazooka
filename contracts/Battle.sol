@@ -10,8 +10,8 @@ contract Battle {
     uint256 public maxBattles = 100;
 
     struct BattleStruct {
-        address _address1;
-        address _address2;
+        NFT nft1;
+        NFT nft2;
         uint256 votes1;
         address[] _votes1;
         uint256 votes2;
@@ -20,6 +20,12 @@ contract Battle {
         uint256 amount;
         bool finalized;
         uint256 _id;
+    }
+
+    struct NFT {
+        address _address;
+        bytes32 image;
+        bytes32 name;
     }
 
     mapping(uint256 => mapping(uint256 => BattleStruct)) public BattlesMapping;
@@ -76,21 +82,25 @@ contract Battle {
         BattlesMapping[monthNo][battleId].allVotes.push(msg.sender);
     }
 
-    function finalizeBattle(uint256 battleId, address _candidate2) payable checkAmount(msg.value) public {
+    function finalizeBattle(uint256 battleId, address _candidate2, bytes32 image, bytes32 name) payable checkAmount(msg.value) public {
         require(battleId<=battleID, 'Initialize a battle first');
         require(BattlesMapping[monthNo][battleId].finalized == false, 'Battle already finalized');
-        BattlesMapping[monthNo][battleId]._address2 = _candidate2;
+        BattlesMapping[monthNo][battleId].nft2._address = _candidate2;
+        BattlesMapping[monthNo][battleId].nft2.image = image;
+        BattlesMapping[monthNo][battleId].nft2.name = name;
         BattlesMapping[monthNo][battleId].votes1 = 0;
         BattlesMapping[monthNo][battleId].votes2 = 0;
         BattlesMapping[monthNo][battleId].amount += msg.value;
         BattlesMapping[monthNo][battleId].finalized = true;
     }
 
-    function createInitialBattle(address _candidate1) payable checkAmount(msg.value) public {
+    function createInitialBattle(address _candidate1, bytes32 image, bytes32 name) payable checkAmount(msg.value) public {
         require(battleID+1<=maxBattles,'Battles limit exceeded!');
         battleID += 1;
         BattleStruct storage battle = BattlesMapping[monthNo][battleID];
-        battle._address1 = _candidate1;
+        battle.nft1._address = _candidate1;
+        battle.nft1.image = image;
+        battle.nft1.name = name;
         battle.amount = msg.value;
         battle.finalized = false;
         battle._id = battleID;
@@ -101,7 +111,7 @@ contract Battle {
     }
 
     modifier checkAmount(uint256 amount) {
-        require(amount == 1000000000000000000 || amount == 2000000000000000000 || amount == 3000000000000000000,'Not correct amount');
+        // require(amount == 0.01 || amount == 0.02 || amount == 0.03,'Not correct amount');
         _;
     }
 }

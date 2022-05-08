@@ -4,3 +4,9 @@ const nextConfig = {
 }
 
 module.exports = nextConfig
+
+module.exports ={
+  images: {
+    domains: ['testnets-api.opensea.io'],
+  },
+}

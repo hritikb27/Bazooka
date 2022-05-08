@@ -15,7 +15,7 @@ contract Bazooka is Battle, KeeperCompatibleInterface {
     uint public immutable interval;
     uint public lastTimeStamp;
 
-    constructor(uint updateInterval) Battle(0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0) {
+    constructor(uint updateInterval){
       interval = updateInterval;
       lastTimeStamp = block.timestamp;
 
