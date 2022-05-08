@@ -24,8 +24,8 @@ contract Battle {
 
     struct NFT {
         address _address;
-        bytes32 image;
-        bytes32 name;
+        string image;
+        string name;
     }
 
     mapping(uint256 => mapping(uint256 => BattleStruct)) public BattlesMapping;
@@ -82,7 +82,7 @@ contract Battle {
         BattlesMapping[monthNo][battleId].allVotes.push(msg.sender);
     }
 
-    function finalizeBattle(uint256 battleId, address _candidate2, bytes32 image, bytes32 name) payable checkAmount(msg.value) public {
+    function finalizeBattle(uint256 battleId, address _candidate2, string memory image, string memory name) payable checkAmount(msg.value) public {
         require(battleId<=battleID, 'Initialize a battle first');
         require(BattlesMapping[monthNo][battleId].finalized == false, 'Battle already finalized');
         BattlesMapping[monthNo][battleId].nft2._address = _candidate2;
@@ -94,7 +94,8 @@ contract Battle {
         BattlesMapping[monthNo][battleId].finalized = true;
     }
 
-    function createInitialBattle(address _candidate1, bytes32 image, bytes32 name) payable checkAmount(msg.value) public {
+    function createInitialBattle(address _candidate1, string memory image, string memory name) payable checkAmount(msg.value) public {
+        console.log(msg.value);
         require(battleID+1<=maxBattles,'Battles limit exceeded!');
         battleID += 1;
         BattleStruct storage battle = BattlesMapping[monthNo][battleID];
@@ -108,6 +109,18 @@ contract Battle {
 
     function getBalance() public view returns (uint256) {
         return address(this).balance;
+    }
+
+    function getBattleAmount() public view returns (uint256) {
+        return battleID;
+    }
+
+    function getBattleData(uint256 battleId) public view returns (BattleStruct memory){
+        return BattlesMapping[monthNo][battleId];
+    }
+
+    function getBattleNumber() public view returns (uint256) {
+        return battleID;
     }
 
     modifier checkAmount(uint256 amount) {

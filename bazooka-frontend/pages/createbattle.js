@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import ABI from '../utils/abi.json'
-import { useMoralis, useMoralisWeb3Api,useMoralisWeb3ApiCall } from "react-moralis";
+import { ethers } from "ethers";
+import { useMoralis, useMoralisWeb3Api,useWeb3ExecuteFunction } from "react-moralis";
 import Image from "next/image";
 
 export default function Dashboard() {
@@ -48,39 +49,21 @@ export default function Dashboard() {
 
     async function createBattle(e) {
         e.preventDefault();
-        await Moralis.enableWeb3();
         const options = {
-            contractAddress: "0x2d8922fE1c0847F5fd1550FDb39c3e0584F4edB7",
+            contractAddress: "0x0F6d227e58314Af97a11a29fACb7B96bFE3d0602",
             functionName: "createInitialBattle",
             abi: ABI,
             msgValue: Moralis.Units.ETH("0.01"),
             params: {
                 _candidate1: selectedNFT.address,
+                image: selectedNFT.image,
+                name: selectedNFT.name
             }
         }
 
         const transaction = await Moralis.executeFunction(options);
         const receipt = await transaction.wait();
         console.log('Transaction reciept: ', receipt);
-    }
-
-    async function getBattleData(e) {
-        e.preventDefault();
-        await Moralis.enableWeb3();
-        const options = {
-            contractAddress: "0x2d8922fE1c0847F5fd1550FDb39c3e0584F4edB7",
-            functionName: "BattlesMapping",
-            abi: ABI,
-        }
-        // const transaction = await Moralis.executeFunction(options);
-        // const receipt = await transaction.wait();
-
-        const { fetch, data, error, isLoading } = useMoralisWeb3ApiCall(
-            native.runContractFunction,
-            { ...options }
-          );
-        console.log(data)
-
     }
 
     function handleNftSelection(nft){
@@ -114,7 +97,6 @@ export default function Dashboard() {
                     })}
                 </ul>
                 <button className="text-center w-[20%] border border-black rounded m-auto" onClick={createBattle}>Create Battle</button>
-                <button className="text-center w-[20%] border border-black rounded m-auto" onClick={getBattleData}>Get Battle Data</button>
             </form>
         </div>
     )

@@ -6,7 +6,7 @@ export default function Layout({children}) {
             <aside className="h-full bg-red-400 w-[20%]">
                 <ul className="mt-[10rem] font-semibold text-xl">
                     <Link href="/createbattle"><li className="border-y border-black w-[100%] p-[1rem] cursor-pointer">Create a Battle</li></Link>
-                    <li></li>
+                    <Link href="/InitializedBattles"><li className="border-y border-black w-[100%] p-[1rem] cursor-pointer">Initialized Battles</li></Link>
                     <li></li>
                     <li></li>
                 </ul>

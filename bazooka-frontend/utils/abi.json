@@ -1,306 +1,493 @@
-[{
-    "inputs": [
+[
+    {
+      "inputs": [
         {
-            "internalType": "uint256",
-            "name": "updateInterval",
-            "type": "uint256"
+          "internalType": "uint256",
+          "name": "updateInterval",
+          "type": "uint256"
         }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-},
-{
-    "inputs": [
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [
         {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
         },
         {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
         }
-    ],
-    "name": "BattlesMapping",
-    "outputs": [
+      ],
+      "name": "BattlesMapping",
+      "outputs": [
         {
-            "internalType": "address",
-            "name": "_address1",
-            "type": "address"
+          "components": [
+            {
+              "internalType": "address",
+              "name": "_address",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "image",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "name",
+              "type": "string"
+            }
+          ],
+          "internalType": "struct Battle.NFT",
+          "name": "nft1",
+          "type": "tuple"
         },
         {
-            "internalType": "address",
-            "name": "_address2",
-            "type": "address"
+          "components": [
+            {
+              "internalType": "address",
+              "name": "_address",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "image",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "name",
+              "type": "string"
+            }
+          ],
+          "internalType": "struct Battle.NFT",
+          "name": "nft2",
+          "type": "tuple"
         },
         {
-            "internalType": "uint256",
-            "name": "votes1",
-            "type": "uint256"
+          "internalType": "uint256",
+          "name": "votes1",
+          "type": "uint256"
         },
         {
-            "internalType": "uint256",
-            "name": "votes2",
-            "type": "uint256"
+          "internalType": "uint256",
+          "name": "votes2",
+          "type": "uint256"
         },
         {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
         },
         {
-            "internalType": "bool",
-            "name": "finalized",
-            "type": "bool"
+          "internalType": "bool",
+          "name": "finalized",
+          "type": "bool"
         },
         {
-            "internalType": "uint256",
-            "name": "_id",
-            "type": "uint256"
+          "internalType": "uint256",
+          "name": "_id",
+          "type": "uint256"
         }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-},
-{
-    "inputs": [
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
         {
-            "internalType": "uint256",
-            "name": "battleId",
-            "type": "uint256"
+          "internalType": "uint256",
+          "name": "battleId",
+          "type": "uint256"
         }
-    ],
-    "name": "IncrementVote1",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-},
-{
-    "inputs": [
+      ],
+      "name": "IncrementVote1",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
         {
-            "internalType": "uint256",
-            "name": "battleId",
-            "type": "uint256"
+          "internalType": "uint256",
+          "name": "battleId",
+          "type": "uint256"
         }
-    ],
-    "name": "IncrementVote2",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-},
-{
-    "inputs": [],
-    "name": "battleID",
-    "outputs": [
+      ],
+      "name": "IncrementVote2",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "battleID",
+      "outputs": [
         {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
         }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-},
-{
-    "inputs": [
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
         {
-            "internalType": "bytes",
-            "name": "",
-            "type": "bytes"
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
         }
-    ],
-    "name": "checkUpkeep",
-    "outputs": [
+      ],
+      "name": "checkUpkeep",
+      "outputs": [
         {
-            "internalType": "bool",
-            "name": "upkeepNeeded",
-            "type": "bool"
+          "internalType": "bool",
+          "name": "upkeepNeeded",
+          "type": "bool"
         },
         {
-            "internalType": "bytes",
-            "name": "",
-            "type": "bytes"
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
         }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-},
-{
-    "inputs": [],
-    "name": "counter",
-    "outputs": [
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "counter",
+      "outputs": [
         {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
         }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-},
-{
-    "inputs": [
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
         {
-            "internalType": "address",
-            "name": "_candidate1",
-            "type": "address"
-        }
-    ],
-    "name": "createInitialBattle",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-},
-{
-    "inputs": [
-        {
-            "internalType": "uint256",
-            "name": "battleId",
-            "type": "uint256"
+          "internalType": "address",
+          "name": "_candidate1",
+          "type": "address"
         },
         {
-            "internalType": "address",
-            "name": "_candidate2",
-            "type": "address"
-        }
-    ],
-    "name": "finalizeBattle",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-},
-{
-    "inputs": [],
-    "name": "getBalance",
-    "outputs": [
-        {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-        }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-},
-{
-    "inputs": [
-        {
-            "internalType": "uint256",
-            "name": "battleId",
-            "type": "uint256"
-        }
-    ],
-    "name": "getVoters1",
-    "outputs": [
-        {
-            "internalType": "address[]",
-            "name": "",
-            "type": "address[]"
-        }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-},
-{
-    "inputs": [
-        {
-            "internalType": "uint256",
-            "name": "battleId",
-            "type": "uint256"
-        }
-    ],
-    "name": "getVotes",
-    "outputs": [
-        {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
+          "internalType": "string",
+          "name": "image",
+          "type": "string"
         },
         {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
         }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-},
-{
-    "inputs": [],
-    "name": "interval",
-    "outputs": [
+      ],
+      "name": "createInitialBattle",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
         {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-        }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-},
-{
-    "inputs": [],
-    "name": "lastTimeStamp",
-    "outputs": [
+          "internalType": "uint256",
+          "name": "battleId",
+          "type": "uint256"
+        },
         {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-        }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-},
-{
-    "inputs": [],
-    "name": "maxBattles",
-    "outputs": [
+          "internalType": "address",
+          "name": "_candidate2",
+          "type": "address"
+        },
         {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-        }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-},
-{
-    "inputs": [],
-    "name": "monthNo",
-    "outputs": [
+          "internalType": "string",
+          "name": "image",
+          "type": "string"
+        },
         {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
         }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-},
-{
-    "inputs": [],
-    "name": "owner",
-    "outputs": [
+      ],
+      "name": "finalizeBattle",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getBalance",
+      "outputs": [
         {
-            "internalType": "address",
-            "name": "",
-            "type": "address"
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
         }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-},
-{
-    "inputs": [
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getBattleAmount",
+      "outputs": [
         {
-            "internalType": "bytes",
-            "name": "",
-            "type": "bytes"
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
         }
-    ],
-    "name": "performUpkeep",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-}]
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "battleId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getBattleData",
+      "outputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "_address",
+                  "type": "address"
+                },
+                {
+                  "internalType": "string",
+                  "name": "image",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "name",
+                  "type": "string"
+                }
+              ],
+              "internalType": "struct Battle.NFT",
+              "name": "nft1",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "_address",
+                  "type": "address"
+                },
+                {
+                  "internalType": "string",
+                  "name": "image",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "name",
+                  "type": "string"
+                }
+              ],
+              "internalType": "struct Battle.NFT",
+              "name": "nft2",
+              "type": "tuple"
+            },
+            {
+              "internalType": "uint256",
+              "name": "votes1",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address[]",
+              "name": "_votes1",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "votes2",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address[]",
+              "name": "_votes2",
+              "type": "address[]"
+            },
+            {
+              "internalType": "address[]",
+              "name": "allVotes",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "finalized",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_id",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct Battle.BattleStruct",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getBattleNumber",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "battleId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getVoters1",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "battleId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getVotes",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "interval",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "lastTimeStamp",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "maxBattles",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "monthNo",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "name": "performUpkeep",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ]

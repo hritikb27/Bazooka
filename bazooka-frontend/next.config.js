@@ -9,4 +9,5 @@ module.exports ={
   images: {
     domains: ['testnets-api.opensea.io'],
   },
+  reactStrictMode: false,
 }

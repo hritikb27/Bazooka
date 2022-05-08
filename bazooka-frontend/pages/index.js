@@ -10,6 +10,10 @@ export default function Home() {
 
   useEffect(() => {
     if (isAuthenticated) {
+      async function web3enable(){
+        await Moralis.enableWeb3();
+      }
+      web3enable();
       Router.push('/createbattle')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
