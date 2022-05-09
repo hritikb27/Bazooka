@@ -34,7 +34,6 @@ export default function Home() {
       if(user){
         Moralis.enableWeb3();
         console.log(user.get('ethAddress'))
-        Router.push('/createbattle')
       }
         // .catch(function (error) {
         //   console.log(error);
