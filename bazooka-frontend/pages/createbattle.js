@@ -1,20 +1,25 @@
 import { useState, useEffect } from "react"
 import ABI from '../utils/abi.json'
 import { ethers } from "ethers";
-import { useMoralis, useMoralisWeb3Api,useWeb3ExecuteFunction } from "react-moralis";
+import { useMoralis, useMoralisWeb3Api, useWeb3ExecuteFunction } from "react-moralis";
 import Image from "next/image";
 
 export default function Dashboard() {
     const [amount, setAmount] = useState();
     const [NftBalance, setNftBalance] = useState([{ name: 'name', tokenAddress: 'address', image: 'result' }]);
     const [selectedNFT, setSelectedNFT] = useState();
-    const { Moralis } = useMoralis();
+    const { user, Moralis, isAuthenticated } = useMoralis();
     const Web3Api = useMoralisWeb3Api();
-    const {native} = useMoralisWeb3Api();
+    const { native } = useMoralisWeb3Api();
 
     useEffect(() => {
+        if (!isAuthenticated) {
+            Moralis.authenticate();
+            Moralis.enableWeb3();
+        }
+        console.log(user.attributes);
         async function getNfts() {
-            const options1 = { chain: 'rinkeby', address: '0x153Da55D54e815E9e6Dd1BDEA497dDec4aF52A21' };
+            const options1 = { chain: 'rinkeby', address: `${user.attributes.ethAddress}` };
 
             const testnetNFTs = await Web3Api.Web3API.account.getNFTs(options1);
 
@@ -27,15 +32,19 @@ export default function Dashboard() {
 
 
             async function getNftData(nft) {
-                const imageUrl = await fetch(nft.token_uri);
-                const result = await imageUrl.json();
-                console.log('NFT IMAGE: ', NftBalance);
-                return result;
-            }
+                try {
+                    const imageUrl = await fetch(nft.token_uri);
+                    const result = await imageUrl.json()
 
-            testnetNFTs.result.map(n => console.log('Running loop'))
-            console.log(testnetNFTs.result)
+                    console.log('NFT IMAGE: ', NftBalance);
+                    return result.image
+                }
+                catch (e) {
+                    console.log();
+                }
+            }
         }
+
         getNfts();
 
     }, [])
@@ -66,7 +75,7 @@ export default function Dashboard() {
         console.log('Transaction reciept: ', receipt);
     }
 
-    function handleNftSelection(nft){
+    function handleNftSelection(nft) {
         setSelectedNFT({
             name: nft.name,
             image: nft.image.image,
@@ -90,9 +99,9 @@ export default function Dashboard() {
                     {NftBalance.map((nft, index) => {
                         if (index == 0) return;
                         return <li className="w-[30%] h-[300px] border border-black rounded flex flex-col justify-between">
-                            {<img src={NftBalance[1] && nft.image.image} className="min-h-[210px] max-h-[210px] min-w-[256px] " />}
+                            {nft.image ? <img src={NftBalance[1] && nft.image} className="min-h-[210px] max-h-[210px] min-w-[256px] " />: <p>Can't fetch NFT Image!</p>}
                             <p className="ml-2">{nft.name}</p>
-                            <input type='radio' name="nftSelect" onClick={()=>handleNftSelection(nft)} className='m-auto cursor-pointer' />
+                            {nft.image && <input type='radio' name="nftSelect" onClick={() => handleNftSelection(nft)} className='m-auto cursor-pointer' />}
                         </li>
                     })}
                 </ul>

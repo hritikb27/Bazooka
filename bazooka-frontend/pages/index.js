@@ -8,6 +8,15 @@ import Router from 'next/router'
 export default function Home() {
   const { Moralis, authenticate, isAuthenticated, isAuthenticating, user, account, logout } = useMoralis();
 
+  useEffect(()=>{
+      if(window.ethereum){
+        window.ethereum.on('accountsChanged',async()=>{
+          await logout();
+          Router.push('/');
+        })
+      }
+  },[]);
+
   useEffect(() => {
     if (isAuthenticated) {
       async function web3enable(){
@@ -21,14 +30,15 @@ export default function Home() {
 
   const login = async () => {
     if (!isAuthenticated) {
-
-      Moralis.authenticate().then(function (user) {
+      const user = await Moralis.authenticate();
+      if(user){
         Moralis.enableWeb3();
         console.log(user.get('ethAddress'))
-    })
-        .catch(function (error) {
-          console.log(error);
-        });
+        Router.push('/createbattle')
+      }
+        // .catch(function (error) {
+        //   console.log(error);
+        // });
     }
   }
 
