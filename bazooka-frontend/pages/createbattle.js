@@ -78,7 +78,7 @@ export default function Dashboard() {
 
     return (
         <div className="flex flex-col items-center justify-center mt-[5rem] gap-5">
-            <form className="md:w-[80%] lg:w-[60%] xl:w-[38%] flex flex-col gap-5">
+            <form className="md:w-[80%] lg:w-[60%] xl:w-[60%] flex flex-col gap-5">
                 <label className='m-auto'>Select Bet Amount</label>
                 <ul className="flex gap-5 m-auto w-[50%] ">
                     <li className={amount === 30 ? 'text-center border border-black rounded cursor-pointer w-[40%] bg-red-400' : 'text-center border border-black rounded cursor-pointer w-[40%]'} onClick={() => handleAmount(1)}>30</li>
@@ -89,10 +89,10 @@ export default function Dashboard() {
                 <ul className="w-[100%] m-auto flex gap-5 flex-wrap">
                     {NftBalance.map((nft, index) => {
                         if (index == 0) return;
-                        return <li className="w-[30%] h-[250px] border border-black rounded flex flex-col justify-between cursor-pointer">
-                            {<img src={NftBalance[1] && nft.image.image} width='256px' height='210px' />}
+                        return <li className="w-[30%] h-[300px] border border-black rounded flex flex-col justify-between">
+                            {<img src={NftBalance[1] && nft.image.image} className="min-h-[210px] max-h-[210px] min-w-[256px] " />}
                             <p className="ml-2">{nft.name}</p>
-                            <input type='radio' name="nftSelect" onClick={()=>handleNftSelection(nft)} />
+                            <input type='radio' name="nftSelect" onClick={()=>handleNftSelection(nft)} className='m-auto cursor-pointer' />
                         </li>
                     })}
                 </ul>

@@ -1,4 +1,5 @@
 require("@nomiclabs/hardhat-waffle");
+require('dotenv').config();
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -24,7 +25,7 @@ module.exports = {
     },
     matic: {
       url: "https://rpc-mumbai.matic.today",
-      accounts: ["6b45c65eae922b05496b46eeb192f3aa4ef9e0a8add89a992661ce2345499c1b"]
+      accounts: [`${process.env.accountKey}`]
     }
   }
 };
