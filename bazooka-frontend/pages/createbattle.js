@@ -51,9 +51,9 @@ export default function Dashboard() {
 
 
     function handleAmount(num) {
-        if (num === 1) setAmount(30)
+        if (num === 1) setAmount(25)
         else if (num === 2) setAmount(50)
-        else if (num === 3) setAmount(80)
+        else if (num === 3) setAmount(100)
     }
 
     async function createBattle(e) {
@@ -90,9 +90,9 @@ export default function Dashboard() {
             <form className="md:w-[80%] lg:w-[60%] xl:w-[60%] flex flex-col gap-5">
                 <label className='m-auto'>Select Bet Amount</label>
                 <ul className="flex gap-5 m-auto w-[50%] ">
-                    <li className={amount === 30 ? 'text-center border border-black rounded cursor-pointer w-[40%] bg-red-400' : 'text-center border border-black rounded cursor-pointer w-[40%]'} onClick={() => handleAmount(1)}>30</li>
+                    <li className={amount === 25 ? 'text-center border border-black rounded cursor-pointer w-[40%] bg-red-400' : 'text-center border border-black rounded cursor-pointer w-[40%]'} onClick={() => handleAmount(1)}>25</li>
                     <li className={amount === 50 ? 'text-center border border-black rounded cursor-pointer w-[40%] bg-red-400' : 'text-center border border-black rounded cursor-pointer w-[40%]'} onClick={() => handleAmount(2)}>50</li>
-                    <li className={amount === 80 ? 'text-center border border-black rounded cursor-pointer w-[40%] bg-red-400' : 'text-center border border-black rounded cursor-pointer w-[40%]'} onClick={() => handleAmount(3)}>80</li>
+                    <li className={amount === 100 ? 'text-center border border-black rounded cursor-pointer w-[40%] bg-red-400' : 'text-center border border-black rounded cursor-pointer w-[40%]'} onClick={() => handleAmount(3)}>100</li>
                 </ul>
 
                 <ul className="w-[100%] m-auto flex gap-5 flex-wrap">
