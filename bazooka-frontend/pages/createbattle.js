@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
+import { storeContext } from "./_app";
 import ABI from '../utils/abi.json'
 import { ethers } from "ethers";
 import { useMoralis, useMoralisWeb3Api, useWeb3ExecuteFunction } from "react-moralis";
@@ -7,6 +8,7 @@ import Image from "next/image";
 export default function Dashboard() {
     const [amount, setAmount] = useState();
     const [NftBalance, setNftBalance] = useState([{ name: 'name', tokenAddress: 'address', image: 'result' }]);
+    const {userNfts, setUserNfts} = useContext(storeContext);
     const [selectedNFT, setSelectedNFT] = useState();
     const { user, Moralis, isAuthenticated } = useMoralis();
     const Web3Api = useMoralisWeb3Api();
@@ -25,6 +27,7 @@ export default function Dashboard() {
 
             testnetNFTs.result.map(async (nft, index) => {
                 const result = await getNftData(nft);
+                setUserNfts(prev=>[...prev, { name: `${nft.name}`, tokenAddress: `${nft.token_address}`, image: result }])
                 setNftBalance(prev => {
                     return [...prev, { name: `${nft.name}`, tokenAddress: `${nft.token_address}`, image: result }];
                 })
