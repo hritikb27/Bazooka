@@ -7,7 +7,7 @@ export default function Layout({children}) {
                 <ul className="mt-[10rem] font-semibold text-xl">
                     <Link href="/createbattle"><li className="border-y border-black w-[100%] p-[1rem] cursor-pointer">Create a Battle</li></Link>
                     <Link href="/InitializedBattles"><li className="border-y border-black w-[100%] p-[1rem] cursor-pointer">Initialized Battles</li></Link>
-                    <li></li>
+                    <Link href="/browseBattles"><li className="border-y border-black w-[100%] p-[1rem] cursor-pointer">Browse Battles</li></Link>
                     <li></li>
                 </ul>
             </aside>
