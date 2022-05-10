@@ -23,7 +23,8 @@ contract Battle {
     }
 
     struct NFT {
-        address _address;
+        address nftAddress;
+        address ownerAddress;
         string image;
         string name;
     }
@@ -85,7 +86,9 @@ contract Battle {
     function finalizeBattle(uint256 battleId, address _candidate2, string memory image, string memory name) payable checkAmount(msg.value) public {
         require(battleId<=battleID, 'Initialize a battle first');
         require(BattlesMapping[monthNo][battleId].finalized == false, 'Battle already finalized');
-        BattlesMapping[monthNo][battleId].nft2._address = _candidate2;
+        require(BattlesMapping[monthNo][battleId].nft1.ownerAddress != msg.sender, "You can't battle yourself, sorry!");
+        BattlesMapping[monthNo][battleId].nft2.nftAddress = _candidate2;
+        BattlesMapping[monthNo][battleId].nft2.ownerAddress = msg.sender;
         BattlesMapping[monthNo][battleId].nft2.image = image;
         BattlesMapping[monthNo][battleId].nft2.name = name;
         BattlesMapping[monthNo][battleId].votes1 = 0;
@@ -99,7 +102,8 @@ contract Battle {
         require(battleID+1<=maxBattles,'Battles limit exceeded!');
         battleID += 1;
         BattleStruct storage battle = BattlesMapping[monthNo][battleID];
-        battle.nft1._address = _candidate1;
+        battle.nft1.nftAddress = _candidate1;
+        battle.nft1.ownerAddress = msg.sender;
         battle.nft1.image = image;
         battle.nft1.name = name;
         battle.amount = msg.value;
@@ -124,7 +128,7 @@ contract Battle {
     }
 
     modifier checkAmount(uint256 amount) {
-        // require(amount == 0.01 || amount == 0.02 || amount == 0.03,'Not correct amount');
+        require(amount == 25000000000000000000 || amount == 50000000000000000000 || amount == 100000000000000000000,'Not correct amount');
         _;
     }
 }
