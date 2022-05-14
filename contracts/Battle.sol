@@ -24,7 +24,7 @@ contract Battle {
 
     struct NFT {
         address nftAddress;
-        address ownerAddress;
+        address payable ownerAddress;
         string image;
         string name;
     }
@@ -88,7 +88,7 @@ contract Battle {
         require(BattlesMapping[monthNo][battleId].finalized == false, 'Battle already finalized');
         require(BattlesMapping[monthNo][battleId].nft1.ownerAddress != msg.sender, "You can't battle yourself, sorry!");
         BattlesMapping[monthNo][battleId].nft2.nftAddress = _candidate2;
-        BattlesMapping[monthNo][battleId].nft2.ownerAddress = msg.sender;
+        BattlesMapping[monthNo][battleId].nft2.ownerAddress = payable(msg.sender);
         BattlesMapping[monthNo][battleId].nft2.image = image;
         BattlesMapping[monthNo][battleId].nft2.name = name;
         BattlesMapping[monthNo][battleId].votes1 = 0;
@@ -103,7 +103,7 @@ contract Battle {
         battleID += 1;
         BattleStruct storage battle = BattlesMapping[monthNo][battleID];
         battle.nft1.nftAddress = _candidate1;
-        battle.nft1.ownerAddress = msg.sender;
+        battle.nft1.ownerAddress = payable(msg.sender);
         battle.nft1.image = image;
         battle.nft1.name = name;
         battle.amount = msg.value;
