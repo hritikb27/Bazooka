@@ -4,6 +4,7 @@ import ABI from '../utils/abi.json'
 import { ethers } from "ethers";
 import { useMoralis, useMoralisWeb3Api, useWeb3ExecuteFunction } from "react-moralis";
 import Image from "next/image";
+import {useRouter} from 'next/router'
 
 export default function Dashboard() {
     const [amount, setAmount] = useState();
@@ -13,13 +14,16 @@ export default function Dashboard() {
     const { user, Moralis, isAuthenticated } = useMoralis();
     const Web3Api = useMoralisWeb3Api();
     const { native } = useMoralisWeb3Api();
+    const router = useRouter()
 
     useEffect(() => {
         if (!isAuthenticated) {
-            Moralis.authenticate();
-            Moralis.enableWeb3();
-        }
-        console.log(user.attributes);
+            
+            router.push('/')
+            // Moralis.authenticate();
+            // Moralis.enableWeb3();
+        }else{
+
         async function getNfts() {
             const options1 = { chain: 'rinkeby', address: `${user.attributes.ethAddress}` };
 
@@ -49,6 +53,7 @@ export default function Dashboard() {
         }
 
         getNfts();
+    }
 
     }, [])
 
@@ -90,7 +95,7 @@ export default function Dashboard() {
 
     return (
         <div className="flex flex-col items-center justify-center mt-[5rem] gap-5">
-            <form className="md:w-[80%] lg:w-[60%] xl:w-[60%] flex flex-col gap-5">
+            <form className="md:w-[100%] xl:w-[70%] 2xl:w-[60%] flex flex-col gap-5">
                 <label className='m-auto'>Select Bet Amount</label>
                 <ul className="flex gap-5 m-auto w-[50%] ">
                     <li className={amount === 25 ? 'text-center border border-black rounded cursor-pointer w-[40%] bg-red-400' : 'text-center border border-black rounded cursor-pointer w-[40%]'} onClick={() => handleAmount(1)}>25</li>
@@ -102,7 +107,7 @@ export default function Dashboard() {
                     {NftBalance.map((nft, index) => {
                         if (index == 0) return;
                         return <li className="w-[30%] h-[300px] border border-black rounded flex flex-col justify-between">
-                            {nft.image ? <img src={NftBalance[1] && nft.image} className="min-h-[210px] max-h-[210px] min-w-[256px] " />: <p>Can't fetch NFT Image!</p>}
+                            {nft.image ? <img src={NftBalance[1] && nft.image} className="min-h-[210px] max-h-[210px] md:min-w-[200px] " />: <p>Can't fetch NFT Image!</p>}
                             <p className="ml-2">{nft.name}</p>
                             {nft.image && <input type='radio' name="nftSelect" onClick={() => handleNftSelection(nft)} className='m-auto cursor-pointer' />}
                         </li>

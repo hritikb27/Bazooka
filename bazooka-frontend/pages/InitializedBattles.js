@@ -4,16 +4,25 @@ import { storeContext } from "./_app";
 import { Dialog, Transition } from '@headlessui/react'
 import { CheckIcon, HandIcon } from '@heroicons/react/outline'
 import ABI from '../utils/abi.json'
+import {useRouter} from 'next/router'
 
 export default function InitializedBattles() {
     const { userNfts, setUserNfts } = useContext(storeContext);
     const [selectedNFT, setSelectedNFT] = useState();
+    const [selectedBattleID, setSelectedBattleID] = useState();
     const [open, setOpen] = useState(false)
-    const { Moralis } = useMoralis();
+    const { user, Moralis, isAuthenticated } = useMoralis();
     const contractProcessor = useWeb3ExecuteFunction();
     const [battles, setBattles] = useState([]);
+    const router = useRouter();
 
     useEffect(() => {
+        if (!isAuthenticated) {
+            
+            router.push('/')
+            // Moralis.authenticate();
+            // Moralis.enableWeb3();
+        }else{
         let battleNum;
         async function getBattleData() {
             const options = {
@@ -43,44 +52,48 @@ export default function InitializedBattles() {
 
         getBattleData();
         getAllBattles();
+    }
 
     }, [])
 
     function handleNftSelection(nft) {
         setSelectedNFT({
             name: nft.name,
-            image: nft.image.image,
+            image: nft.image,
             address: nft.tokenAddress
         })
 
         console.log(selectedNFT)
     }
 
-    function getBattles(battle) {
+    async function finalizeBattle(battle) {
         const options = {
             contractAddress: "0x0F6d227e58314Af97a11a29fACb7B96bFE3d0602",
             functionName: "finalizeBattle",
             abi: ABI,
             params: {
-                battleId: battle._id,
-                _candidate2: '',
-                image: '',
-                name: '',
+                battleId: selectedBattleID,
+                _candidate2: selectedNFT.address,
+                image: selectedNFT.image,
+                name: selectedNFT.name,
             }
         }
+
+        const transaction = await Moralis.executeFunction(options);
+        const receipt = await transaction.wait();
+        console.log('Transaction reciept: ', receipt);
     }
 
     return (
         <>
             <div className="flex flex-col items-center justify-center mt-[5rem] gap-5">
-                <button onClick={getBattles}>Click</button>
-                <ul className="w-[100%] md:w-[80%] lg:w-[60%] xl:w-[60%] m-auto flex gap-5 flex-wrap">
+                <ul className="w-[100%] md:w-[100%] xl:w-[70%] 2xl:w-[60%] m-auto flex gap-5 flex-wrap">
                     {battles.map(battle => {
                         if (battle.finalized) return;
                         return <li className="w-[30%] h-[300px]  border border-black rounded flex flex-col justify-between cursor-pointer">
-                            <img src={battle[0][1]} className="min-h-[210px] max-h-[210px] min-w-[256px] " />
+                            <img src={battle[0][1]} className="min-h-[210px] max-h-[210px] md:min-w-[200px] " />
                             <p>Amount: {parseInt(battle.amount)}</p>
-                            <button className="border border-white bg-black text-white h-[18%]" onClick={() => setOpen(prev => true)}>Battle</button>
+                            <button className="border border-white bg-black text-white h-[18%]" onClick={() =>{ setOpen(prev => true); setSelectedBattleID(parseInt(battle._id));}}>Battle</button>
                         </li>
                     })}
                 </ul>
@@ -122,7 +135,7 @@ export default function InitializedBattles() {
                                                 {userNfts && userNfts.map((nft, index) => {
                                                     if (index == 0) return;
                                                     return <li className="w-[45%] h-[300px] border border-black rounded flex flex-col justify-between">
-                                                        {nft.image ? <img src={userNfts[1] && nft.image} className="min-h-[210px] max-h-[210px] min-w-[226px] " /> : <p>Can't fetch NFT Image!</p>}
+                                                        {nft.image ? <img src={userNfts[1] && nft.image} className="min-h-[210px] max-h-[210px] md:min-w-[200px] " /> : <p>Can't fetch NFT Image!</p>}
                                                         <p className="ml-2">{nft.name}</p>
                                                         {nft.image && <input type='radio' name="nftSelect" onClick={() => handleNftSelection(nft)} className='m-auto cursor-pointer' />}
                                                     </li>
@@ -135,7 +148,7 @@ export default function InitializedBattles() {
                                         <button
                                             type="button"
                                             className="inline-flex w-[6vw] md:w-[8vw] h-[41px] mr-4 mt-6 items-center justify-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                        // onClick={handleOrderShipping}
+                                            onClick={finalizeBattle}
                                         >
                                             Battle
                                         </button>

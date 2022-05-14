@@ -3,16 +3,17 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import { useMoralis } from "react-moralis";
 import { useEffect } from 'react';
-import Router from 'next/router'
+import { useRouter } from 'next/router'
 
 export default function Home() {
   const { Moralis, authenticate, isAuthenticated, isAuthenticating, user, account, logout } = useMoralis();
+  const router = useRouter()
 
   useEffect(()=>{
       if(window.ethereum){
         window.ethereum.on('accountsChanged',async()=>{
           await logout();
-          Router.push('/');
+          router.push('/');
         })
       }
   },[]);
@@ -23,7 +24,8 @@ export default function Home() {
         await Moralis.enableWeb3();
       }
       web3enable();
-      Router.push('/createbattle')
+      console.log(user)
+      if(user){router.push('/createbattle')};
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated]);
@@ -41,15 +43,9 @@ export default function Home() {
     }
   }
 
-  const logOut = async () => {
-    await logout();
-    console.log("logged out");
-  }
-
   return (
     <div className="flex justify-center">
       <button onClick={login}>Connect Wallet</button>
-      <button onClick={logout}>Logout</button>
     </div>
   )
 }
