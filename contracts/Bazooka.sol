@@ -2,9 +2,10 @@
 pragma solidity ^0.8.0;
 import "./Battle.sol";
 import "./NFTBetting.sol";
+import "./Profile.sol";
 import "@chainlink/contracts/src/v0.8/KeeperCompatible.sol";
 
-contract Bazooka is Battle, NFTBetting, KeeperCompatibleInterface {
+contract Bazooka is Battle, NFTBetting, Profile, KeeperCompatibleInterface {
 
     /**
     * Use an interval in seconds and a timestamp to slow execution of Upkeep
