@@ -10,12 +10,12 @@ export default function Home() {
   const router = useRouter()
 
   useEffect(()=>{
-      if(window.ethereum){
-        window.ethereum.on('accountsChanged',async()=>{
-          await logout();
-          router.push('/');
-        })
-      }
+      // if(window.ethereum){
+      //   window.ethereum.on('accountsChanged',async()=>{
+      //     await logout();
+      //     router.push('/');
+      //   })
+      // }
   },[]);
 
   useEffect(() => {

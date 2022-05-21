@@ -67,7 +67,7 @@ export default function Dashboard() {
     async function createBattle(e) {
         e.preventDefault();
         const options = {
-            contractAddress: "0x0F6d227e58314Af97a11a29fACb7B96bFE3d0602",
+            contractAddress: process.env.contractAddress,
             functionName: "createInitialBattle",
             abi: ABI,
             msgValue: Moralis.Units.ETH("0.01"),
@@ -86,7 +86,7 @@ export default function Dashboard() {
     function handleNftSelection(nft) {
         setSelectedNFT({
             name: nft.name,
-            image: nft.image.image,
+            image: nft.image,
             address: nft.tokenAddress
         })
 
@@ -94,26 +94,26 @@ export default function Dashboard() {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center mt-[5rem] gap-5">
-            <form className="md:w-[100%] xl:w-[70%] 2xl:w-[60%] flex flex-col gap-5">
+        <div className="flex flex-col items-center justify-center gap-5">
+            <form className="md:w-[100%] xl:w-[70%] 2xl:w-[60%] flex flex-col gap-5 text-white">
                 <label className='m-auto'>Select Bet Amount</label>
-                <ul className="flex gap-5 m-auto w-[50%] ">
-                    <li className={amount === 25 ? 'text-center border border-black rounded cursor-pointer w-[40%] bg-red-400' : 'text-center border border-black rounded cursor-pointer w-[40%]'} onClick={() => handleAmount(1)}>25</li>
-                    <li className={amount === 50 ? 'text-center border border-black rounded cursor-pointer w-[40%] bg-red-400' : 'text-center border border-black rounded cursor-pointer w-[40%]'} onClick={() => handleAmount(2)}>50</li>
-                    <li className={amount === 100 ? 'text-center border border-black rounded cursor-pointer w-[40%] bg-red-400' : 'text-center border border-black rounded cursor-pointer w-[40%]'} onClick={() => handleAmount(3)}>100</li>
+                <ul className="flex gap-5 m-auto w-[50%]">
+                    <li className={amount === 25 ? 'text-center border border-white rounded cursor-pointer w-[40%] bg-red-400' : 'text-center border border-white rounded cursor-pointer w-[40%]'} onClick={() => handleAmount(1)}>25</li>
+                    <li className={amount === 50 ? 'text-center border border-white rounded cursor-pointer w-[40%] bg-red-400' : 'text-center border border-white rounded cursor-pointer w-[40%]'} onClick={() => handleAmount(2)}>50</li>
+                    <li className={amount === 100 ? 'text-center border border-white rounded cursor-pointer w-[40%] bg-red-400' : 'text-center border border-white rounded cursor-pointer w-[40%]'} onClick={() => handleAmount(3)}>100</li>
                 </ul>
 
-                <ul className="w-[100%] m-auto flex gap-5 flex-wrap">
+                <ul className="w-[100%] m-auto flex gap-5 flex-wrap " >
                     {NftBalance.map((nft, index) => {
                         if (index == 0) return;
-                        return <li className="w-[30%] h-[300px] border border-black rounded flex flex-col justify-between">
-                            {nft.image ? <img src={NftBalance[1] && nft.image} className="min-h-[210px] max-h-[210px] md:min-w-[200px] " />: <p>Can't fetch NFT Image!</p>}
-                            <p className="ml-2">{nft.name}</p>
+                        return <li className="w-[30%] h-[300px] border border-[#bd0b83] rounded flex flex-col justify-between bg-black bg-opacity-30 bg-clip-padding rounded-lg " style={{backdropFilter:'blur(15px)'}}>
+                            {nft.image ? <img src={NftBalance[1] && nft.image} className="min-h-[210px] rounded max-h-[210px] md:min-w-[200px] " />: <p>Can't fetch NFT Image!</p>}
+                            <p className="ml-2 text-white">{nft.name}</p>
                             {nft.image && <input type='radio' name="nftSelect" onClick={() => handleNftSelection(nft)} className='m-auto cursor-pointer' />}
                         </li>
                     })}
                 </ul>
-                <button className="text-center w-[20%] border border-black rounded m-auto" onClick={createBattle}>Create Battle</button>
+                <button className="text-center w-[20%] border border-black rounded m-auto text-white" onClick={createBattle}>Create Battle</button>
             </form>
         </div>
     )
