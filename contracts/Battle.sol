@@ -1,13 +1,12 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
 
-import "hardhat/console.sol";
-
 contract Battle {
     address public owner;
     uint256 public monthNo = 1;
     uint256 public battleID = 0;
     uint256 public maxBattles = 100;
+    bool public battlesPaused = false;
 
     struct BattleStruct {
         NFT nft1;
@@ -45,9 +44,10 @@ contract Battle {
         return BattlesMapping[monthNo][battleId]._votes1;
     }
 
-    function IncrementVote1(uint256 battleId) public {
+    function IncrementVote1(uint256 battleId) public areBattlesPaused {
         bool canVote;
         require(BattlesMapping[monthNo][battleId].finalized == true, 'Finalize the battle first');
+        require(BattlesMapping[monthNo][battleId].nft1.ownerAddress != msg.sender, "You can't vote your own NFT");
         if(BattlesMapping[monthNo][battleId].allVotes.length==0) canVote=true;
         else{
             for(uint i=BattlesMapping[monthNo][battleId].allVotes.length; i>0; i=i-1){
@@ -64,9 +64,10 @@ contract Battle {
         BattlesMapping[monthNo][battleId].allVotes.push(msg.sender);
     }
     
-    function IncrementVote2(uint256 battleId) public {
+    function IncrementVote2(uint256 battleId) public areBattlesPaused {
         bool canVote;
         require(BattlesMapping[monthNo][battleId].finalized == true, 'Finalize the battle first');
+        require(BattlesMapping[monthNo][battleId].nft2.ownerAddress != msg.sender, "You can't vote your own NFT");
         if(BattlesMapping[monthNo][battleId].allVotes.length==0) canVote=true;
         else{
             for(uint i=BattlesMapping[monthNo][battleId].allVotes.length; i>0; i=i-1){
@@ -86,7 +87,8 @@ contract Battle {
     function finalizeBattle(uint256 battleId, address _candidate2, string memory image, string memory name) payable checkAmount(msg.value) public {
         require(battleId<=battleID, 'Initialize a battle first');
         require(BattlesMapping[monthNo][battleId].finalized == false, 'Battle already finalized');
-        require(BattlesMapping[monthNo][battleId].nft1.ownerAddress != msg.sender, "You can't battle yourself, sorry!");
+        /* Commenting for testing */
+        // require(BattlesMapping[monthNo][battleId].nft1.ownerAddress != msg.sender, "You can't battle yourself, sorry!");
         BattlesMapping[monthNo][battleId].nft2.nftAddress = _candidate2;
         BattlesMapping[monthNo][battleId].nft2.ownerAddress = payable(msg.sender);
         BattlesMapping[monthNo][battleId].nft2.image = image;
@@ -97,9 +99,8 @@ contract Battle {
         BattlesMapping[monthNo][battleId].finalized = true;
     }
 
-    function createInitialBattle(address _candidate1, string memory image, string memory name) payable checkAmount(msg.value) public {
-        console.log(msg.value);
-        require(battleID+1<=maxBattles,'Battles limit exceeded!');
+    function createInitialBattle(address _candidate1, string memory image, string memory name) payable checkAmount(msg.value) public areBattlesPaused {
+        require(battleID+1<=maxBattles,'Battles limit exceeded for this battle season!');
         battleID += 1;
         BattleStruct storage battle = BattlesMapping[monthNo][battleID];
         battle.nft1.nftAddress = _candidate1;
@@ -123,12 +124,18 @@ contract Battle {
         return BattlesMapping[monthNo][battleId];
     }
 
-    function getBattleNumber() public view returns (uint256) {
-        return battleID;
+    function getMonthNumber() public view returns (uint256) {
+        return monthNo;
     }
 
     modifier checkAmount(uint256 amount) {
-        require(amount == 25000000000000000000 || amount == 50000000000000000000 || amount == 100000000000000000000,'Not correct amount');
+        /* Require only these amount to start battles in mainnet */
+        // require(amount == 25000000000000000000 || amount == 50000000000000000000 || amount == 100000000000000000000,'Not correct amount');
+        _;
+    }
+    
+    modifier areBattlesPaused() {
+        require(!battlesPaused,'Battles are paused, please wait until they start again.');
         _;
     }
 }
