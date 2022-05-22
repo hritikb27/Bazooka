@@ -23,6 +23,16 @@ export default function addNFTs() {
         }
         await Moralis.executeFunction(options);
     }
+
+    async function runVRF(){
+        const options = {
+            contractAddress: process.env.contractAddress,
+            functionName: "requestRandomWords",
+            abi: ABI,
+        }
+        await Moralis.executeFunction(options);
+    }
+
     return(
         <>
          <div className="md:col-span-2 w-[40%] h-[800px] m-auto">
@@ -85,6 +95,7 @@ export default function addNFTs() {
                 </div>
               </div>
             </form>
+            <button onClick={runVRF}>Run VRF</button>
           </div>
         </>
     )

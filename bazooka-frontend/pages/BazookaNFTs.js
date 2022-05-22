@@ -73,14 +73,12 @@ export default function BrowseBattles() {
             <button onClick={getBattles} className="text-white">Click</button>
             <ul className="w-[100%] md:w-[100%] xl:w-[70%] 2xl:w-[60%] m-auto flex gap-5 flex-wrap max-h-[720px] overflow-y-auto customScrollbar">
                 {battles.map(battle=>{
-                   
-                    return <ul className="w-[90%] border border-white rounded flex justify-between px-2 bg-black bg-black bg-opacity-30 bg-clip-padding rounded-lg" style={{backdropFilter:'blur(15px)'}}>
-                        <li className="w-[30%] h-[300px]  border border-white rounded flex flex-col justify-between cursor-pointer text-white">
-                        <img src={battle[0][1]} className="min-h-[210px] max-h-[210px] md:min-w-[200px] " />
-                        <p className="text-white text-center">{battle[0][2]}</p>
-                        <button className="border border-white bg-red-400 text-white h-[18%]" onClick={()=>handleBet(battle)}>Bet</button>
+                    return <li className="w-[30%] h-[300px]  border border-white rounded flex flex-col justify-between cursor-pointer text-white">
+                            <img src={battle[0][1]} className="min-h-[210px] max-h-[210px] md:min-w-[200px] " />
+                            <p className="text-white text-center">{battle[0][2]}</p>
+                            <button className="border border-white bg-red-400 text-white h-[18%]" onClick={()=>handleBet(battle)}>Bet</button>
+                            {battle[3] && <p>Winner!</p>}
                         </li>
-                    </ul>
                 })}
             </ul>
         </div>

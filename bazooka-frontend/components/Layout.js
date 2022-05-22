@@ -44,7 +44,7 @@ export default function Layout({children, userData}) {
                     <Link href="/browseBattles"><li className="border-y border-black w-[100%] p-[1rem] cursor-pointer">Browse Battles</li></Link>
                     <Link href="/BazookaNFTs"><li className="border-y border-black w-[100%] p-[1rem] cursor-pointer">Bazooka Bets</li></Link>
                     <Link href="/BattlesHistory"><li className="border-y border-black w-[100%] p-[1rem] cursor-pointer">Battles History</li></Link>
-                    {(owner && owner==user.attributes.ethAddress.toLocaleLowerCase()) && <Link href="/addNFTs"><li className="border-y border-black w-[100%] p-[1rem] cursor-pointer">Add NFTs</li></Link>}
+                    {((owner && user) && owner==user.attributes.ethAddress.toLocaleLowerCase()) && <Link href="/addNFTs"><li className="border-y border-black w-[100%] p-[1rem] cursor-pointer">Add NFTs</li></Link>}
                     <li></li>
                 </ul>
                 </div>
