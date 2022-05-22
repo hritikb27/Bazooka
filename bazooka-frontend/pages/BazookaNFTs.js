@@ -4,16 +4,16 @@ import { storeContext } from "./_app";
 import ABI from '../utils/abi.json'
 
 export default function BrowseBattles() {
-    const { battlesPaused, setBattlesPaused } = useContext(storeContext);
     const { Moralis } = useMoralis();
     const contractProcessor = useWeb3ExecuteFunction();
     const [battles, setBattles] = useState([]);
+    const { battlesPaused, setBattlesPaused } = useContext(storeContext);
 
     useEffect(()=>{
         async function getBattleData() {
             const options = {
                 contractAddress: process.env.contractAddress,
-                functionName: "getBattleAmount",
+                functionName: "getNFTNum",
                 abi: ABI,
             }
     
@@ -35,12 +35,14 @@ export default function BrowseBattles() {
         console.log(battleNum)
         const options = {
             contractAddress: process.env.contractAddress,
-            functionName: "getBattleData",
+            functionName: "getNFTs",
             abi: ABI,
         }
         
         for(let i=1; i<=battleNum; i++){
-            const data = await contractProcessor.fetch({params: {...options, params:{battleId:`${i}`}}})
+            const data = await contractProcessor.fetch({params: {...options, params:{nftId:`${i}`}}})
+            console.log(data
+                )
             setBattles(prev=>[...prev,data]);
         }
     }
@@ -48,30 +50,13 @@ export default function BrowseBattles() {
     function getBattles(){
         console.log(battles)
     }
-
-    async function handleVote1(battle){
-        const battleID = parseInt(battle[4])
-        const options = {
-            chain: 'matic testnet',
-            contractAddress: process.env.contractAddress,
-            functionName: "IncrementVote1",
-            abi: ABI,
-            params: {
-                battleId: battleID,
-            }
-        }
-
-        const transaction = await Moralis.executeFunction(options)
-        const receipt = await transaction.wait();
-        console.log('Transaction reciept: ', receipt);
-    }
     
-    async function handleVote2(battle){
-        const battleID = parseInt(battle[4])
+    async function handleBet(battle){
+        const battleID = parseInt(battle._id)
         const options = {
             chain: 'matic testnet',
             contractAddress: process.env.contractAddress,
-            functionName: "IncrementVote2",
+            functionName: "bet",
             abi: ABI,
             params: {
                 battleId: battleID,
@@ -88,16 +73,12 @@ export default function BrowseBattles() {
             <button onClick={getBattles} className="text-white">Click</button>
             <ul className="w-[100%] md:w-[100%] xl:w-[70%] 2xl:w-[60%] m-auto flex gap-5 flex-wrap max-h-[720px] overflow-y-auto customScrollbar">
                 {battles.map(battle=>{
-                    if(!battle[3]) return;
+                   
                     return <ul className="w-[90%] border border-white rounded flex justify-between px-2 bg-black bg-black bg-opacity-30 bg-clip-padding rounded-lg" style={{backdropFilter:'blur(15px)'}}>
                         <li className="w-[30%] h-[300px]  border border-white rounded flex flex-col justify-between cursor-pointer text-white">
-                        <img src={battle[0][2]} className="min-h-[210px] max-h-[210px] md:min-w-[200px] " />
-                        <button className="border border-white bg-red-400 text-white h-[18%]" onClick={()=>handleVote1(battle)}>Vote</button>
-                        </li>
-                        <h2 className="my-auto text-white">VS</h2>
-                        <li className="w-[30%] h-[300px]  border border-white rounded flex flex-col justify-between cursor-pointer text-white">
-                        <img src={battle[1][2]} className="min-h-[210px] max-h-[210px] md:min-w-[200px] " />
-                        <button className="border border-white bg-red-400 text-white h-[18%]" onClick={()=>handleVote2(battle)}>Vote</button>
+                        <img src={battle[0][1]} className="min-h-[210px] max-h-[210px] md:min-w-[200px] " />
+                        <p className="text-white text-center">{battle[0][2]}</p>
+                        <button className="border border-white bg-red-400 text-white h-[18%]" onClick={()=>handleBet(battle)}>Bet</button>
                         </li>
                     </ul>
                 })}

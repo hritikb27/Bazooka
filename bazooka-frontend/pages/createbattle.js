@@ -9,7 +9,7 @@ import {useRouter} from 'next/router'
 export default function Dashboard() {
     const [amount, setAmount] = useState();
     const [NftBalance, setNftBalance] = useState([{ name: 'name', tokenAddress: 'address', image: 'result' }]);
-    const {userNfts, setUserNfts} = useContext(storeContext);
+    const {userNfts, setUserNfts, battlesPaused, setBattlesPaused} = useContext(storeContext);
     const [selectedNFT, setSelectedNFT] = useState();
     const { user, Moralis, isAuthenticated } = useMoralis();
     const Web3Api = useMoralisWeb3Api();
@@ -93,7 +93,7 @@ export default function Dashboard() {
         console.log(selectedNFT)
     }
 
-    return (
+    return !battlesPaused ? (
         <div className="flex flex-col items-center justify-center gap-5">
             <form className="md:w-[100%] xl:w-[70%] 2xl:w-[60%] flex flex-col gap-5 text-white">
                 <label className='m-auto'>Select Bet Amount</label>
@@ -103,10 +103,10 @@ export default function Dashboard() {
                     <li className={amount === 100 ? 'text-center border border-white rounded cursor-pointer w-[40%] bg-red-400' : 'text-center border border-white rounded cursor-pointer w-[40%]'} onClick={() => handleAmount(3)}>100</li>
                 </ul>
 
-                <ul className="w-[100%] m-auto flex gap-5 flex-wrap " >
+                <ul className="w-[100%] max-h-[720px] m-auto flex gap-5 flex-wrap overflow-y-auto " >
                     {NftBalance.map((nft, index) => {
                         if (index == 0) return;
-                        return <li className="w-[30%] h-[300px] border border-[#bd0b83] rounded flex flex-col justify-between bg-black bg-opacity-30 bg-clip-padding rounded-lg " style={{backdropFilter:'blur(15px)'}}>
+                        return <li className="w-[30%] h-[300px] border border-white rounded flex flex-col justify-between bg-black bg-opacity-30 bg-clip-padding rounded-lg " style={{backdropFilter:'blur(15px)'}}>
                             {nft.image ? <img src={NftBalance[1] && nft.image} className="min-h-[210px] rounded max-h-[210px] md:min-w-[200px] " />: <p>Can't fetch NFT Image!</p>}
                             <p className="ml-2 text-white">{nft.name}</p>
                             {nft.image && <input type='radio' name="nftSelect" onClick={() => handleNftSelection(nft)} className='m-auto cursor-pointer' />}
@@ -116,5 +116,5 @@ export default function Dashboard() {
                 <button className="text-center w-[20%] border border-black rounded m-auto text-white" onClick={createBattle}>Create Battle</button>
             </form>
         </div>
-    )
+    ) : (<div className="w-full h-full flex justify-center mt-10 items-center"><p className="h-[50px] w-[30%] flex justify-center items-center text-black m-auto border-2 bg-white border-black rounded">Battles are paused currently, please visit in a while!</p></div>)
 }

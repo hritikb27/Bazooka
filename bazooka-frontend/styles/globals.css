@@ -2,16 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
-#bgblur{
-    height:100vh;
-    width:100%;
-    background: url(../assets/bg2.jpg);
+#bgblur {
+    height: 100vh;
+    width: 100%;
+    background: url(../assets/bg3.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     position: absolute;
     filter: blur(1px);
 }
 
-#__next{
+#__next {
     position: relative;
+}
+
+.customScrollbar::-webkit-scrollbar {
+    width: 10px;
+}
+
+.customScrollbar::-webkit-scrollbar-track {
+    background: black;
+}
+
+.customScrollbar::-webkit-scrollbar-thumb {
+    background-color: rgb(236, 72, 153);
+    /* color of the scroll thumb */
+    border-radius: 20px;
+    /* roundness of the scroll thumb */
 }

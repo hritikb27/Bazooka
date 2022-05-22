@@ -6,7 +6,7 @@ const nextConfig = {
 module.exports ={
   nextConfig,
   env: {
-    contractAddress: "0x073fDC21277Ab1b4a95AdeA2301C50b7Ff74E7b5",
+    contractAddress: "0x5B64eECAE3D0e09E4FC6451B7274D86169D67A62",
   },
   images: {
     domains: ['testnets-api.opensea.io'],
