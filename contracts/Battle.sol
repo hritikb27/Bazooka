@@ -1,8 +1,8 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
+import "./Profile.sol";
 
-contract Battle {
-    address public owner;
+contract Battle is Profile {
     uint256 public monthNo = 1;
     uint256 public battleID = 0;
     uint256 public maxBattles = 100;
@@ -29,10 +29,6 @@ contract Battle {
     }
 
     mapping(uint256 => mapping(uint256 => BattleStruct)) public BattlesMapping;
-
-    constructor() {
-        owner = msg.sender;
-    }
 
     function getVotes(uint256 battleId) public view returns (uint256, uint256) {
         uint vote1 = BattlesMapping[monthNo][battleId].votes1;
@@ -97,6 +93,7 @@ contract Battle {
         BattlesMapping[monthNo][battleId].votes2 = 0;
         BattlesMapping[monthNo][battleId].amount += msg.value;
         BattlesMapping[monthNo][battleId].finalized = true;
+        users[msg.sender].canBattle = false;
     }
 
     function createInitialBattle(address _candidate1, string memory image, string memory name) payable checkAmount(msg.value) public areBattlesPaused {
@@ -110,6 +107,7 @@ contract Battle {
         battle.amount = msg.value;
         battle.finalized = false;
         battle._id = battleID;
+        users[msg.sender].canBattle = false;
     }
 
     function getBalance() public view returns (uint256) {
