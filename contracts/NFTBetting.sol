@@ -4,7 +4,7 @@ import "./Battle.sol";
 
 contract NFTBetting is Battle {
     uint256 nftID = 0;
-    uint256 maxNFTs = 14;
+    uint256 maxNFTs = 6;
 
     struct NFTStruct {
         NFT nft;
