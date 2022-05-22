@@ -1,11 +1,9 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
-import "./Battle.sol";
-import "./NFTBetting.sol";
-import "./Profile.sol";
+import "./VRF.sol";
 import "@chainlink/contracts/src/v0.8/KeeperCompatible.sol";
 
-contract Bazooka is Battle, NFTBetting, Profile, KeeperCompatibleInterface {
+contract Bazooka is VRF, KeeperCompatibleInterface {
 
     /**
     * Use an interval in seconds and a timestamp to slow execution of Upkeep
@@ -15,7 +13,7 @@ contract Bazooka is Battle, NFTBetting, Profile, KeeperCompatibleInterface {
     uint public lastTimeStamp;
     uint public lastTimeStamp2;
 
-    constructor(uint updateInterval, uint updateInterval2){
+    constructor(uint updateInterval, uint updateInterval2) VRF(321){
       interval = updateInterval;
       interval2 = updateInterval2;
       lastTimeStamp = block.timestamp;
@@ -41,16 +39,23 @@ contract Bazooka is Battle, NFTBetting, Profile, KeeperCompatibleInterface {
                 uint256 _amount = (uint256(BattlesMapping[monthNo][i].amount)/uint256(5))*uint256(4);
                 if(BattlesMapping[monthNo][i].votes1>BattlesMapping[monthNo][i].votes2){
                     BattlesMapping[monthNo][i].nft1.ownerAddress.transfer(_amount);
+                    for(uint256 j=0; j<=BattlesMapping[monthNo][i]._votes1.length; j++){
+                        users[BattlesMapping[monthNo][i]._votes1[j]].canBattle = true;
+                    }
                 }
                 else if(BattlesMapping[monthNo][i].votes1<BattlesMapping[monthNo][i].votes2){
                     BattlesMapping[monthNo][i].nft2.ownerAddress.transfer(_amount);
+                    for(uint256 j=0; j<=BattlesMapping[monthNo][i]._votes2.length; j++){
+                        users[BattlesMapping[monthNo][i]._votes2[j]].canBattle = true;
+                    }
                 }
             }
+            // requestRandomWords();
             battlesPaused = true;
         }
         if((block.timestamp - lastTimeStamp2) > interval2 ) {
             lastTimeStamp = block.timestamp;
-            lastTimeStamp2 = block.timestamp + 600;
+            lastTimeStamp2 = block.timestamp + interval;
             battlesPaused = false;
             monthNo += 1;
             battleID = 0;
