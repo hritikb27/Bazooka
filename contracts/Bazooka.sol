@@ -24,6 +24,10 @@ contract Bazooka is VRF, KeeperCompatibleInterface {
         // We don't use the checkData in this example. The checkData is defined when the Upkeep was registered.
     }
 
+    function getOwner() public view returns (address) {
+        return owner;
+    }
+
     function performUpkeep(bytes calldata /* performData */) external override {
         //We highly recommend revalidating the upkeep in the performUpkeep function
         if ((block.timestamp - lastTimeStamp) > interval ) {
@@ -56,6 +60,7 @@ contract Bazooka is VRF, KeeperCompatibleInterface {
         if((block.timestamp - lastTimeStamp2) > interval2 ) {
             lastTimeStamp = block.timestamp;
             lastTimeStamp2 = block.timestamp + interval;
+            battleIds[monthNo] = battleID;
             battlesPaused = false;
             monthNo += 1;
             battleID = 0;

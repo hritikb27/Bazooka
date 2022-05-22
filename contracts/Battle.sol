@@ -28,7 +28,8 @@ contract Battle is Profile {
         string name;
     }
 
-    mapping(uint256 => mapping(uint256 => BattleStruct)) public BattlesMapping;
+    mapping(uint256=>uint256) internal battleIds;
+    mapping(uint256 => mapping(uint256 => BattleStruct)) internal BattlesMapping;
 
     function getVotes(uint256 battleId) public view returns (uint256, uint256) {
         uint vote1 = BattlesMapping[monthNo][battleId].votes1;
@@ -118,12 +119,25 @@ contract Battle is Profile {
         return battleID;
     }
 
-    function getBattleData(uint256 battleId) public view returns (BattleStruct memory){
-        return BattlesMapping[monthNo][battleId];
+    function getBattleData(uint256 battleId) public view returns (NFT memory,NFT memory,uint256, bool, uint256){
+        return (BattlesMapping[monthNo][battleId].nft1, BattlesMapping[monthNo][battleId].nft2, BattlesMapping[monthNo][battleId].amount, BattlesMapping[monthNo][battleId].finalized, BattlesMapping[monthNo][battleId]._id);
+    }
+
+    function getBattleHistory(uint256 month, uint256 battleId) public view returns (BattleStruct memory){
+        require(month<monthNo, 'No history available for this month');
+        return BattlesMapping[month][battleId];
     }
 
     function getMonthNumber() public view returns (uint256) {
         return monthNo;
+    }
+    
+    function getBattlesPaused() public view returns (bool) {
+        return battlesPaused;
+    }
+
+    function getPastBattleIds(uint256 month) public view returns (uint256) {
+        return battleIds[month];
     }
 
     modifier checkAmount(uint256 amount) {

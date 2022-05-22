@@ -47,7 +47,7 @@ contract VRF is NFTBetting, VRFConsumerBaseV2 {
   }
 
   // Assumes the subscription is funded sufficiently.
-  function requestRandomWords() internal onlyOwnerAccess {
+  function requestRandomWords() public onlyOwnerAccess {
     // Will revert if subscription is not set and funded.
     s_requestId = COORDINATOR.requestRandomWords(
       keyHash,
@@ -62,7 +62,7 @@ contract VRF is NFTBetting, VRFConsumerBaseV2 {
     uint256, /* requestId */
     uint256[] memory randomWords
   ) internal override {
-    s_randomWords = (randomWords[0] % 6) + 1;
+    s_randomWords = (randomWords[0] % nftID) + 1;
     NFTMapping[monthNo][s_randomWords].winner = true;
   }
 

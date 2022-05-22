@@ -7,13 +7,14 @@ contract NFTBetting is Battle {
     uint256 maxNFTs = 6;
 
     struct NFTStruct {
-        NFT nft;
+        _NFT nft;
         address[] betters;
         uint256 bets;
         bool winner;
+        uint256 _id;
     }
 
-    struct NFT {
+    struct _NFT {
         address nftAddress;
         string image;
         string name;
@@ -26,6 +27,7 @@ contract NFTBetting is Battle {
         nftID += 1;
         NFTStruct storage NFTInstance = NFTMapping[monthNo][nftID];
         NFTInstance.nft.name = name;
+        NFTInstance._id = nftID;
         NFTInstance.nft.image = image;
         NFTInstance.nft.nftAddress = nftAddress;
         NFTInstance.bets = 0;
