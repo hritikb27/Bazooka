@@ -6,6 +6,7 @@ import { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/router'
 import { storeContext } from "./_app";
 import ABI from '../utils/abi.json'
+import { motion } from 'framer-motion';
 
 export default function Home() {
   const { Moralis, authenticate, isAuthenticated, isAuthenticating, user, account, logout } = useMoralis();
@@ -14,6 +15,26 @@ export default function Home() {
   const [users, setUsers] = useState();
   const { userData, setUserData } = useContext(storeContext);
 
+  const line1 = "Presenting to you...";
+  const line2 = "Bazooka Battles!";
+
+  const sentence = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        delay: 0.8,
+        staggerChildren: 0.08,
+      },
+    },
+  }
+  const letter = {
+    hidden: { opacity: 0, },
+    visible: {
+      opacity: 1,
+      y: 0,
+    },
+  }
   useEffect(() => {
     // if(window.ethereum){
     //   window.ethereum.on('accountsChanged',async()=>{
@@ -72,7 +93,8 @@ export default function Home() {
       const data = await Moralis.executeFunction(options)
       console.log(data)
       console.log(data.includes(user.attributes.ethAddress))
-      data.map(add=>{
+      if(data.length<1)router.push('createProfile')
+      else data.map(add=>{
         console.log(user.attributes.ethAddress)
         if(add.toLowerCase()==user.attributes.ethAddress.toLowerCase()){
           async function userData(){
@@ -94,9 +116,26 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col justify-center">
+    <div className="flex flex-col justify-center w-full h-full flex justify-center">
       <button onClick={login} className="text-white">Connect Wallet</button>
       {isAuthenticated && <button onClick={handleLogin} className="text-white block">Login</button>}
+      <motion.h1 style={{backdropFilter:'blur(15px)'}} className='load-screen--message text-white text-center m-auto mt-80 tracking-widest rounded bg-purple-600/60 pt-2 h-[100px] w-[30%] text-4xl font-bold' variants={sentence} initial="hidden" animate="visible">
+        {line1.split("").map((char,index)=>{
+          return (
+            <motion.span key={char + "-" + index} variants={letter} className="">
+              {char}
+            </motion.span>
+          )
+        })}
+        <br/>
+        {line2.split("").map((char,index)=>{
+          return (
+            <motion.span key={char + "-" + index} variants={letter}>
+              {char}
+            </motion.span>
+          )
+        })}
+      </motion.h1>
     </div>
   )
 }
