@@ -1,15 +1,10 @@
-# Basic Sample Hardhat Project
+# Bazooka Battles
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
+## Introduction
+An NFT battle platform where artists and content creators who own NFTs can battle with other people who own NFTs.
 
-Try running some of the following tasks:
+## Tech Stack used
+NextJS, TailwindCSS, Moralis, Solidity, Chainlink Keeper and VRF
 
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-node scripts/sample-script.js
-npx hardhat help
-```
+### Introductory Video
+https://www.youtube.com/watch?v=tI_azYXI_bk
