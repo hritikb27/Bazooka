@@ -22,9 +22,21 @@ export default function BrowseBattles() {
             return battleNumber;
         }
 
+        async function getBattlesPaused() {
+            const options = {
+              contractAddress: process.env.contractAddress,
+              functionName: "getBattlesPaused",
+              abi: ABI,
+            }
+    
+            const data = await contractProcessor.fetch({ params: { ...options } })
+            setBattlesPaused(data);
+          }
+
         async function run(){
             const battleNum = await getBattleData();
             getAllBattles(battleNum);
+            getBattlesPaused();
         }
 
         run()
@@ -70,14 +82,13 @@ export default function BrowseBattles() {
 
     return !battlesPaused ? (
         <div className="flex flex-col items-center justify-center mt-[5rem] gap-5">
-            <button onClick={getBattles} className="text-white">Click</button>
             <ul className="w-[100%] md:w-[100%] xl:w-[70%] 2xl:w-[60%] m-auto flex gap-5 flex-wrap max-h-[720px] overflow-y-auto customScrollbar">
                 {battles.map(battle=>{
                     return <li className="w-[30%] h-[300px]  border border-white rounded flex flex-col justify-between cursor-pointer text-white">
                             <img src={battle[0][1]} className="min-h-[210px] max-h-[210px] md:min-w-[200px] " />
                             <p className="text-white text-center">{battle[0][2]}</p>
                             <button className="border border-white bg-red-400 text-white h-[18%]" onClick={()=>handleBet(battle)}>Bet</button>
-                            {battle[3] && <p>Winner!</p>}
+                            {battle[3] && <p className="text-center">Winner!</p>}
                         </li>
                 })}
             </ul>

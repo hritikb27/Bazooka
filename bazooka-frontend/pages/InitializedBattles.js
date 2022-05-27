@@ -8,6 +8,7 @@ import {useRouter} from 'next/router'
 
 export default function InitializedBattles() {
     const { userNfts, setUserNfts, battlesPaused, setBattlesPaused } = useContext(storeContext);
+    const [amount, setAmount] = useState();
     const [selectedNFT, setSelectedNFT] = useState();
     const [selectedBattleID, setSelectedBattleID] = useState();
     const [open, setOpen] = useState(false)
@@ -50,7 +51,7 @@ export default function InitializedBattles() {
         async function run(){
             const battleNum = await getBattleData();
             getAllBattles(battleNum);
-            // getBattlesPaused();
+            getBattlesPaused();
         }
 
         run()
@@ -87,7 +88,7 @@ export default function InitializedBattles() {
             chain: 'matic testnet',
             contractAddress: process.env.contractAddress,
             functionName: "finalizeBattle",
-            msgValue: Moralis.Units.ETH("0.01"),
+            msgValue: Moralis.Units.ETH(amount),
             abi: ABI,
             params: {
                 battleId: selectedBattleID,
@@ -117,7 +118,6 @@ export default function InitializedBattles() {
 
     return !battlesPaused ? (
         <>
-            <button className="text-white" onClick={click}>Click</button>
             <div className="flex flex-col items-center justify-center mt-[5rem] gap-5">
                 <ul className="w-[100%] md:w-[100%] xl:w-[70%] 2xl:w-[60%] m-auto flex gap-5 flex-wrap max-h-[720px] overflow-y-auto customScrollbar">
                     {battles.map(battle => {
@@ -125,7 +125,7 @@ export default function InitializedBattles() {
                         return <li className="w-[30%] h-[300px] border border-[#bd0b83] rounded flex flex-col justify-between bg-black bg-opacity-30 bg-clip-padding rounded-lg " style={{backdropFilter:'blur(15px)'}}>
                             <img src={battle[0][2]} className="min-h-[210px] max-h-[210px] md:min-w-[200px] " />
                             <p className="text-white text-center">{Moralis.Units.FromWei(battle[2])} MATIC</p>
-                            <button className="border border-white bg-black text-white h-[18%] bg-black bg-opacity-30 bg-clip-padding" style={{backdropFilter:'blur(15px)'}} onClick={() =>{ setOpen(prev => true); setSelectedBattleID(parseInt(battle[4]));}}>Battle</button>
+                            <button className="border border-white text-white h-[18%] bg-black bg-opacity-30 bg-clip-padding" style={{backdropFilter:'blur(15px)'}} onClick={() =>{ setOpen(prev => true); setSelectedBattleID(parseInt(battle[4])); setAmount(Moralis.Units.FromWei(battle[2]))}}>Battle</button>
                         </li>
                     })}
                 </ul>

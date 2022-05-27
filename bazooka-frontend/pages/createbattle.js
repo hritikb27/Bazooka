@@ -12,6 +12,7 @@ export default function Dashboard() {
     const {userNfts, setUserNfts, battlesPaused, setBattlesPaused} = useContext(storeContext);
     const [selectedNFT, setSelectedNFT] = useState();
     const { user, Moralis, isAuthenticated } = useMoralis();
+    const contractProcessor = useWeb3ExecuteFunction();
     const Web3Api = useMoralisWeb3Api();
     const { native } = useMoralisWeb3Api();
     const router = useRouter()
@@ -51,17 +52,28 @@ export default function Dashboard() {
                 }
             }
         }
+        async function getBattlesPaused() {
+            const options = {
+                contractAddress: process.env.contractAddress,
+                functionName: "getBattlesPaused",
+                abi: ABI,
+            }
+
+            const data = await contractProcessor.fetch({ params: { ...options } })
+            setBattlesPaused(data);
+        }
 
         getNfts();
+        getBattlesPaused();
     }
 
     }, [])
 
 
     function handleAmount(num) {
-        if (num === 1) setAmount(25)
-        else if (num === 2) setAmount(50)
-        else if (num === 3) setAmount(100)
+        if (num === 1) setAmount(0.01)
+        else if (num === 2) setAmount(0.05)
+        else if (num === 3) setAmount(0.1)
     }
 
     async function createBattle(e) {
@@ -70,7 +82,7 @@ export default function Dashboard() {
             contractAddress: process.env.contractAddress,
             functionName: "createInitialBattle",
             abi: ABI,
-            msgValue: Moralis.Units.ETH("0.01"),
+            msgValue: Moralis.Units.ETH(amount),
             params: {
                 _candidate1: selectedNFT.address,
                 image: selectedNFT.image,
@@ -98,9 +110,9 @@ export default function Dashboard() {
             <form className="md:w-[100%] xl:w-[70%] 2xl:w-[60%] flex flex-col gap-5 text-white">
                 <label className='m-auto'>Select Bet Amount</label>
                 <ul className="flex gap-5 m-auto w-[50%]">
-                    <li className={amount === 25 ? 'text-center border border-white rounded cursor-pointer w-[40%] bg-red-400' : 'text-center border border-white rounded cursor-pointer w-[40%]'} onClick={() => handleAmount(1)}>25</li>
-                    <li className={amount === 50 ? 'text-center border border-white rounded cursor-pointer w-[40%] bg-red-400' : 'text-center border border-white rounded cursor-pointer w-[40%]'} onClick={() => handleAmount(2)}>50</li>
-                    <li className={amount === 100 ? 'text-center border border-white rounded cursor-pointer w-[40%] bg-red-400' : 'text-center border border-white rounded cursor-pointer w-[40%]'} onClick={() => handleAmount(3)}>100</li>
+                    <li className={amount === 0.01 ? 'text-center border border-white rounded cursor-pointer w-[40%] bg-red-400' : 'text-center border border-white rounded cursor-pointer w-[40%]'} onClick={() => handleAmount(1)}>0.01</li>
+                    <li className={amount === 0.05 ? 'text-center border border-white rounded cursor-pointer w-[40%] bg-red-400' : 'text-center border border-white rounded cursor-pointer w-[40%]'} onClick={() => handleAmount(2)}>0.05</li>
+                    <li className={amount === 0.1 ? 'text-center border border-white rounded cursor-pointer w-[40%] bg-red-400' : 'text-center border border-white rounded cursor-pointer w-[40%]'} onClick={() => handleAmount(3)}>0.1</li>
                 </ul>
 
                 <ul className="w-[100%] max-h-[720px] m-auto flex gap-5 flex-wrap overflow-y-auto " >
