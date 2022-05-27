@@ -34,22 +34,25 @@ contract Bazooka is VRF, KeeperCompatibleInterface {
             lastTimeStamp2 = block.timestamp;
             lastTimeStamp = block.timestamp;
             for(uint256 i=1; i<=battleID; i++){
+                address payable owner1 = BattlesMapping[monthNo][i].nft1.ownerAddress;
+                address payable owner2 = BattlesMapping[monthNo][i].nft2.ownerAddress;
+                
                 if((BattlesMapping[monthNo][i].votes1+BattlesMapping[monthNo][i].votes2) < uint256(1) || BattlesMapping[monthNo][i].votes1==BattlesMapping[monthNo][i].votes2){
                     uint256 amount = (uint256(BattlesMapping[monthNo][i].amount)/uint256(2));
-                    BattlesMapping[monthNo][i].nft1.ownerAddress.transfer(amount);
-                    BattlesMapping[monthNo][i].nft2.ownerAddress.transfer(amount);
+                    owner1.transfer(amount);
+                    owner2.transfer(amount);
                     continue;
                 }
                 uint256 _amount = (uint256(BattlesMapping[monthNo][i].amount)/uint256(5))*uint256(4);
                 if(BattlesMapping[monthNo][i].votes1>BattlesMapping[monthNo][i].votes2){
-                    BattlesMapping[monthNo][i].nft1.ownerAddress.transfer(_amount);
-                    for(uint256 j=0; j<=BattlesMapping[monthNo][i]._votes1.length; j++){
+                    owner1.transfer(_amount);
+                    for(uint256 j=0; j<BattlesMapping[monthNo][i]._votes1.length; j++){
                         users[BattlesMapping[monthNo][i]._votes1[j]].canBattle = true;
                     }
                 }
                 else if(BattlesMapping[monthNo][i].votes1<BattlesMapping[monthNo][i].votes2){
-                    BattlesMapping[monthNo][i].nft2.ownerAddress.transfer(_amount);
-                    for(uint256 j=0; j<=BattlesMapping[monthNo][i]._votes2.length; j++){
+                    owner2.transfer(_amount);
+                    for(uint256 j=0; j<BattlesMapping[monthNo][i]._votes2.length; j++){
                         users[BattlesMapping[monthNo][i]._votes2[j]].canBattle = true;
                     }
                 }
