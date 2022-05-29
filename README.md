@@ -1,5 +1,8 @@
 # Bazooka Battles
 
+### Live Version
+https://bazooka-battles.vercel.app
+
 ## Introduction
 An NFT battle platform where artists and content creators who own NFTs can battle with other people who own NFTs.
 
